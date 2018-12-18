@@ -5,6 +5,7 @@ let { container } = styles`
     body {
         margin: 50px;
         text-align: center;
+        transform: translate(0,0);
     }
 
     .container {

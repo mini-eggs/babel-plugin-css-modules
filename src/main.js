@@ -3,6 +3,8 @@ var sass = require("node-sass");
 var modules = require("css-modules-loader-core");
 var deasync = require("deasync");
 var uni = require("unique-string");
+var postcss = require("postcss");
+var cssnext = require("postcss-cssnext");
 
 module.exports = function(ctx, props) {
   var all = "";
@@ -26,11 +28,31 @@ module.exports = function(ctx, props) {
     return res;
   }
 
+  // sync pcss
+  function pcss(styles) {
+    var done = false;
+    var res;
+
+    postcss([cssnext()])
+      .process(styles, { from: undefined })
+      .then(function(next) {
+        done = true;
+        res = next;
+      });
+
+    deasync.loopWhile(function() {
+      return !done;
+    });
+
+    return res;
+  }
+
   return {
     visitor: {
       Program: {
-        exit(path) {
+        exit: function(path) {
           var styles = all.replace(/\\([\s\S])|(")/g, "\\$1$2"); // escape double quotes
+          styles = pcss(styles); // postcss/autofix
 
           var src = ctx.parse(`
             (function(){
@@ -45,16 +67,15 @@ module.exports = function(ctx, props) {
           }
         }
       },
-      TaggedTemplateExpression(path) {
+      TaggedTemplateExpression: function(path) {
         try {
           if (path.node.tag.name === func) {
-            var data = toCssModule(
-              new css({}).minify(sass.renderSync({ data: path.node.quasi.quasis[0].value.raw }).css.toString()).styles
-            );
-
-            all += data.injectableSource;
-
-            path.replaceWithSourceString(JSON.stringify(data.exportTokens));
+            var data = path.node.quasi.quasis[0].value.raw; // from template
+            data = sass.renderSync({ data }).css.toString(); // sass
+            data = new css({}).minify(data).styles; // minify
+            data = toCssModule(data); // to module data
+            all += data.injectableSource; // pool responses
+            path.replaceWithSourceString(JSON.stringify(data.exportTokens)); // replace exp. w/ dec
           }
         } catch (e) {
           throw path.buildCodeFrameError(e);

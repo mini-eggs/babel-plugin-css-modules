@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-css-modules",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./src/main.js",
   "author": "Evan M Jones <evanjones4040@gmail.com> (https://evanjon.es/)",
   "license": "MIT",
@@ -16,6 +16,8 @@
     "css-modules-loader-core": "^1.1.0",
     "deasync": "^0.1.14",
     "node-sass": "^4.11.0",
+    "postcss": "^7.0.7",
+    "postcss-cssnext": "^3.1.0",
     "unique-string": "^1.0.0"
   }
 }

@@ -3,7 +3,8 @@
     "start": "parcel src/index.html"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2"
+    "@babel/core": "^7.2.2",
+    "babel-plugin-css-modules": "file:../.."
   },
   "dependencies": {
     "parcel-bundler": "^1.10.3"
