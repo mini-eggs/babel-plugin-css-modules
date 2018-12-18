@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.10.3"
+  }
+}
