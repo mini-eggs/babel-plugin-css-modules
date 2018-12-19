@@ -68,17 +68,20 @@ module.exports = function(ctx, props) {
         }
       },
       TaggedTemplateExpression: function(path) {
-        try {
-          if (path.node.tag.name === func) {
-            var data = path.node.quasi.quasis[0].value.raw; // from template
-            data = sass.renderSync({ data }).css.toString(); // sass
-            data = new css({}).minify(data).styles; // minify
-            data = toCssModule(data); // to module data
-            all += data.injectableSource; // pool responses
-            path.replaceWithSourceString(JSON.stringify(data.exportTokens)); // replace exp. w/ dec
+        if (path.node.tag.name === func) {
+          var data = path.get("quasi").evaluate().value;
+
+          if (!data) {
+            throw new Error("Unable to determine the value of your " + func + " string");
           }
-        } catch (e) {
-          throw path.buildCodeFrameError(e);
+
+          data = sass.renderSync({ data }).css.toString(); // sass
+          data = new css({}).minify(data).styles; // minify
+          data = toCssModule(data); // to module data
+
+          all += data.injectableSource; // pool responses
+
+          path.replaceWithSourceString(JSON.stringify(data.exportTokens)); // replace exp. w/ dec
         }
       }
     }

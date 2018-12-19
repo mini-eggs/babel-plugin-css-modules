@@ -1,6 +1,9 @@
+let white = "#fff";
+
 let classes = styles`
     body {
-        margin: 0
+        margin: 0;
+        background: ${white};
     }
 
     .container {
