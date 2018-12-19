@@ -23,5 +23,5 @@ test("With mutliple nested string variables.", t => {
   `;
 
   t.deepEqual(getStyle(classes.container, "font-size"), fontSize);
-  t.deepEqual(getStyle(classes.button, "color").color);
+  t.deepEqual(getStyle(classes.button, "color"), color);
 });
