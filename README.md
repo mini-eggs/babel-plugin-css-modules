@@ -1,6 +1,6 @@
 # babel-plugin-css-modules
 
-A lean, framework agnostic (S)CSS (modules) in JS solution.
+A lean, framework agnostic (S)CSS (modules) in JS library.
 
 #### Why should you use babel-plugin-css-modules?
 
