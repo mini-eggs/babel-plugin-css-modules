@@ -51,19 +51,22 @@ module.exports = function(ctx, props) {
     visitor: {
       Program: {
         exit: function(path) {
-          var styles = all.replace(/\\([\s\S])|(")/g, "\\$1$2"); // escape double quotes
-          styles = pcss(styles); // postcss/autofix
+          // Don't include runtime if we never actually used it.
+          if (all !== "") {
+            var styles = all.replace(/\\([\s\S])|(")/g, "\\$1$2"); // escape double quotes
+            styles = pcss(styles); // postcss/autofix
 
-          var src = ctx.parse(`
-            (function(){
-              var ss = document.createElement("style");
-              ss.innerHTML = "${styles}";
-              document.head.appendChild(ss);
-            })();
-          `);
+            var src = ctx.parse(`
+              (function(){
+                var ss = document.createElement("style");
+                ss.innerHTML = "${styles}";
+                document.head.appendChild(ss);
+              })();
+            `);
 
-          for (var line of src.program.body.reverse()) {
-            path.node.body.unshift(line);
+            for (var line of src.program.body.reverse()) {
+              path.node.body.unshift(line);
+            }
           }
         }
       },

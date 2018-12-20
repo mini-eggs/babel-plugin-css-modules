@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-css-modules",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "./src/main.js",
   "author": "Evan M Jones <evanjones4040@gmail.com> (https://evanjon.es/)",
   "license": "MIT",
