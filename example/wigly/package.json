@@ -7,6 +7,10 @@
     "babel-plugin-css-modules": "file:../.."
   },
   "dependencies": {
-    "parcel-bundler": "^1.10.3"
+    "parcel-bundler": "^1.10.3",
+    "wigly": "^0.5.16"
+  },
+  "alias": {
+    "css-modules": "../../../"
   }
 }
