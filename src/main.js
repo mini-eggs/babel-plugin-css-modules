@@ -81,39 +81,11 @@ module.exports = function(ctx, props) {
             all += data.injectableSource; // pool responses
             path.replaceWithSourceString(JSON.stringify(data.exportTokens)); // replace exp. w/ dec
           } else {
-            // Now we need to do things at run time...
-            // Lets remove the problem line from the quasis and do what we can while we're here.
-            throw new Error("Unable to determine the value of your " + func + " string");
-
-            // const scope = path.scope.getProgramParent();
-            // const templateObject = scope.generateUidIdentifier("templateObject");
-            // const t = ctx.types;
-
-            // var something = t.callExpression(path.node.tag, [
-            //   t.callExpression(t.cloneNode(templateObject), []),
-            //   ...path.node.quasi.expressions
-            // ]);
-
-            var partial = "";
-
-            // Removing problem lines so we can return an object to user.
-            for (var i = 0; i < path.node.quasi.expressions.length; i++) {
-              var curr = path.node.quasi.quasis[i].value.raw.trim().split("\n");
-              if (i !== 0) curr.shift();
-              if (i !== path.node.quasi.expressions.length - 1) curr.pop();
-              partial += curr.join("\n");
-            }
-
-            partial += path.node.quasi.quasis[path.node.quasi.expressions.length].value.raw.trim();
-
-            partial = sass.renderSync({ data: partial }).css.toString();
-            partial = new css({}).minify(datapartial).styles;
-            partial = toCssModule(partial);
-            all += partial.injectableSource;
-            path.replaceWithSourceString(JSON.stringify(partial.exportTokens));
-
-            // TODO wrap the object returned to user above with function to insert
-            // the given styling on use.
+            throw new Error(
+              "Unable to determine the value of your " +
+                func +
+                " string. All interpolated variables must be known at compile time. A variable has failed to of been read."
+            );
           }
         }
       }
